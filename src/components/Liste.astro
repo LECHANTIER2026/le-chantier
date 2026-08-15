@@ -10,9 +10,7 @@ const { articles, montrerRubrique = false } = Astro.props;
 ---
 
 {
-  articles.length === 0 ? (
-    <p class="vide">Rien de publié pour l’instant dans cette rubrique.</p>
-  ) : (
+  articles.length > 0 && (
     <div class="liste">
       {articles.map((a) => (
         <article>
