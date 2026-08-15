@@ -5,9 +5,9 @@ rubrique: reflexions
 date: 2026-08-15
 auteur: Auguste
 chapeau: "L'espace public regorge d'analogies entre la guerre de 40-45 et le
-  monde d'aujourd'hui. Le film du rayon et des ombres invite à en faire une de
-  plus. Mais j'y vois davantage. Ce chef-d'œuvre de Xavier Giannoli nous
-  bouscule et nous pousse à sortir de notre indifférence ! "
+  monde d'aujourd'hui. Le film \"Des rayons et des ombres\" invite à faire un
+  pas de plus. Ce chef-d'œuvre de Xavier Giannoli nous bouscule et nous pousse à
+  sortir de notre indifférence ! "
 mise_en_avant: true
 brouillon: false
 ---
