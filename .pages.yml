@@ -1,0 +1,201 @@
+# =============================================================
+#  Configuration de l'espace d'administration (Pages CMS)
+#  C'est ce fichier qui décide de ce que vous voyez dans les
+#  formulaires quand vous écrivez un article.
+#  Pour ajouter un champ, copiez un bloc « - name: ... » existant.
+# =============================================================
+
+media:
+  input: public/media
+  output: /media
+
+content:
+  # ---------- Les articles ----------
+  - name: articles
+    label: Articles
+    type: collection
+    path: src/content/articles
+    format: yaml-frontmatter
+    filename: '{primary}.md'
+    view:
+      fields: [titre, rubrique, date, brouillon]
+      primary: titre
+      sort: [date, titre]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: titre
+        label: Titre
+        type: string
+        required: true
+
+      - name: rubrique
+        label: Rubrique
+        type: select
+        required: true
+        default: reflexions
+        options:
+          values:
+            - value: recensions
+              label: Recensions
+            - value: reflexions
+              label: Réflexions
+            - value: recommandations
+              label: Recommandations
+
+      - name: date
+        label: Date de publication
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: auteur
+        label: Auteur / autrice
+        type: string
+        description: 'Facultatif. Ex. : « P. G. » ou un nom complet.'
+
+      - name: chapeau
+        label: Chapeau
+        type: text
+        description: 'Deux ou trois lignes de résumé, affichées sous le titre et dans les listes.'
+
+      - name: image
+        label: Image
+        type: image
+        description: 'Facultatif. Affichée en haut de l’article et dans les listes.'
+
+      - name: credit_image
+        label: Crédit de l’image
+        type: string
+
+      - name: source
+        label: Source
+        type: string
+        description: 'Pour une recension ou une recommandation : le livre, la revue, le lieu…'
+
+      - name: lien
+        label: Lien externe
+        type: string
+        description: 'Adresse complète (https://…) de l’article ou du site d’origine.'
+
+      - name: document
+        label: Fichier à télécharger
+        type: file
+        description: 'Facultatif : un PDF, un tract, un document à joindre.'
+
+      - name: mise_en_avant
+        label: Mettre à la une
+        type: boolean
+        default: false
+        description: 'Un seul article à la fois : c’est celui qui ouvre la page d’accueil.'
+
+      - name: brouillon
+        label: Brouillon (ne pas publier)
+        type: boolean
+        default: false
+
+      - name: body
+        label: Texte de l’article
+        type: rich-text
+
+      - name: reactions
+        label: Réactions publiées
+        type: object
+        list: true
+        description: 'Les messages de lecteurs que vous avez choisi de publier sous l’article. Vous les recevez par e-mail, vous recopiez ici ceux que vous retenez.'
+        fields:
+          - name: auteur
+            label: Signature
+            type: string
+          - name: date
+            label: Date
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: texte
+            label: Message
+            type: text
+
+  # ---------- La page « Qui sommes-nous ? » ----------
+  - name: qui_sommes_nous
+    label: Page « Qui sommes-nous ? »
+    type: file
+    path: src/content/pages/qui-sommes-nous.md
+    format: yaml-frontmatter
+    fields:
+      - name: titre
+        label: Titre de la page
+        type: string
+      - name: chapeau
+        label: Sous-titre
+        type: text
+      - name: body
+        label: Texte
+        type: rich-text
+
+  # ---------- Les réglages généraux ----------
+  - name: reglages
+    label: Réglages du site
+    type: file
+    path: src/data/reglages.json
+    format: json
+    fields:
+      - name: nom_du_site
+        label: Nom du site
+        type: string
+      - name: slogan
+        label: Slogan
+        type: string
+        description: 'Affiché en grand sur la page d’accueil.'
+
+      - name: slogan_accent
+        label: Fin du slogan en couleur
+        type: string
+        description: 'Les derniers mots du slogan à faire ressortir en rouge. Doivent correspondre exactement à la fin du slogan ci-dessus.'
+      - name: accroche
+        label: Phrase de présentation
+        type: text
+
+      - name: colonne_titre
+        label: Titre de la colonne de droite (accueil)
+        type: string
+        description: 'Au-dessus de la petite liste, à droite de l’article à la une.'
+      - name: email
+        label: Adresse e-mail de contact
+        type: string
+
+      - name: instagram
+        label: Adresse du compte Instagram
+        type: string
+        description: 'Adresse complète (https://…). Laissez vide pour ne pas afficher le lien.'
+      - name: description_referencement
+        label: Description pour Google
+        type: text
+
+      - name: cle_formulaire
+        label: Clé du formulaire de réactions (Web3Forms)
+        type: string
+        description: 'Collez ici la clé reçue par e-mail depuis web3forms.com. Tant qu’elle est vide, le formulaire est remplacé par votre adresse de contact.'
+
+      - name: reactions_titre
+        label: Titre du formulaire de réactions
+        type: string
+
+      - name: reactions_texte
+        label: Phrase sous le titre du formulaire
+        type: text
+
+      - name: infolettre_action
+        label: Adresse du formulaire d’infolettre (Brevo)
+        type: string
+        description: 'L’adresse https://…sibforms.com/serve/… fournie par Brevo. Tant qu’elle est vide, le bloc infolettre n’apparaît pas.'
+
+      - name: infolettre_titre
+        label: Titre du bloc infolettre
+        type: string
+
+      - name: infolettre_texte
+        label: Phrase du bloc infolettre
+        type: text
