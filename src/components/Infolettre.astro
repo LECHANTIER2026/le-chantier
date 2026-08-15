@@ -1,0 +1,38 @@
+---
+import reglages from '../data/reglages.json';
+
+const action = reglages.infolettre_action?.trim();
+---
+
+{
+  action && (
+    <section class="infolettre">
+      <div class="texte">
+        <h2>{reglages.infolettre_titre}</h2>
+        <p>{reglages.infolettre_texte}</p>
+      </div>
+      <form action={action} method="POST" target="_blank" rel="noopener">
+        <input type="hidden" name="locale" value="fr" />
+        {/* Piège à robots exigé par Brevo : doit rester vide */}
+        <input
+          type="text"
+          name="email_address_check"
+          value=""
+          class="piege"
+          style="position:absolute;left:-9999px"
+          tabindex="-1"
+          autocomplete="off"
+        />
+        <label class="sr-only" for="champ-infolettre">Votre adresse e-mail</label>
+        <input
+          id="champ-infolettre"
+          type="email"
+          name="EMAIL"
+          required
+          placeholder="votre adresse e-mail"
+        />
+        <button type="submit">S’inscrire</button>
+      </form>
+    </section>
+  )
+}

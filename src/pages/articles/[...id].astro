@@ -1,0 +1,106 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import Reactions from '../../components/Reactions.astro';
+import Infolettre from '../../components/Infolettre.astro';
+import { tousLesArticles } from '../../lib/articles';
+import { formaterDate, nomSingulier } from '../../rubriques';
+
+export async function getStaticPaths() {
+  const tous = await tousLesArticles();
+  return tous.map((article) => ({
+    params: { id: article.id },
+    props: { article, tous },
+  }));
+}
+
+const { article, tous } = Astro.props;
+const d = article.data;
+const { Content } = await render(article);
+
+const suite = tous
+  .filter((a) => a.id !== article.id && a.data.rubrique === d.rubrique)
+  .slice(0, 3);
+---
+
+<Base titre={d.titre} description={d.chapeau} image={d.image}>
+  <article>
+    <header class="article-head">
+      <div class="kicker">
+        <a href={`/${d.rubrique}/`}>{nomSingulier(d.rubrique)}</a>
+      </div>
+      <h1>{d.titre}</h1>
+      {d.chapeau && <p class="chapeau">{d.chapeau}</p>}
+      <div class="byline">
+        {d.auteur && `Par ${d.auteur} — `}{formaterDate(d.date)}
+      </div>
+    </header>
+
+    {
+      d.image && (
+        <figure>
+          <img class="article-image" src={d.image} alt="" />
+          {d.credit_image && <figcaption class="credit">{d.credit_image}</figcaption>}
+        </figure>
+      )
+    }
+
+    {
+      (d.lien || d.document) && (
+        <div class="encart">
+          {d.source && (
+            <>
+              <span class="label">Source</span>
+              <span>{d.source}</span>
+            </>
+          )}
+          {d.lien && (
+            <>
+              <span class="label">À consulter</span>
+              <a href={d.lien} target="_blank" rel="noopener noreferrer">
+                Ouvrir le document original ↗
+              </a>
+            </>
+          )}
+          {d.document && (
+            <>
+              <span class="label">Fichier</span>
+              <a href={d.document} target="_blank" rel="noopener noreferrer">
+                Télécharger ↓
+              </a>
+            </>
+          )}
+        </div>
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+
+  </article>
+
+  <Reactions reactions={d.reactions} titreArticle={d.titre} />
+
+  <Infolettre />
+
+  {
+    suite.length > 0 && (
+      <>
+        <div class="section-title">
+          <h2>À lire ensuite</h2>
+          <div class="line" />
+          <a class="more" href={`/${d.rubrique}/`}>
+            Toute la rubrique →
+          </a>
+        </div>
+        <div class="grid">
+          {suite.map((a) => (
+            <Carte article={a} montrerRubrique={false} />
+          ))}
+        </div>
+      </>
+    )
+  }
+</Base>

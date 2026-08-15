@@ -1,0 +1,35 @@
+---
+import { formaterDate, nomSingulier } from '../rubriques';
+
+interface Props {
+  articles: any[];
+  montrerRubrique?: boolean;
+}
+
+const { articles, montrerRubrique = false } = Astro.props;
+---
+
+{
+  articles.length === 0 ? (
+    <p class="vide">Rien de publié pour l’instant dans cette rubrique.</p>
+  ) : (
+    <div class="liste">
+      {articles.map((a) => (
+        <article>
+          <div class="date">
+            {formaterDate(a.data.date)}
+            {montrerRubrique && <br />}
+            {montrerRubrique && nomSingulier(a.data.rubrique)}
+          </div>
+          <div>
+            <h3>
+              <a href={`/articles/${a.id}/`}>{a.data.titre}</a>
+            </h3>
+            {a.data.chapeau && <p>{a.data.chapeau}</p>}
+            {a.data.source && <p class="exterieur">Source : {a.data.source}</p>}
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}

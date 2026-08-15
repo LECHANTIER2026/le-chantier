@@ -1,0 +1,31 @@
+---
+import { nomSingulier, formaterDate } from '../rubriques';
+
+interface Props {
+  article: any;
+  avecImage?: boolean;
+  montrerRubrique?: boolean;
+}
+
+const { article, avecImage = false, montrerRubrique = true } = Astro.props;
+const d = article.data;
+const url = `/articles/${article.id}/`;
+---
+
+<article class="card">
+  {
+    avecImage && d.image && (
+      <a href={url}>
+        <img class="vignette" src={d.image} alt="" loading="lazy" />
+      </a>
+    )
+  }
+  <div class="meta">
+    {montrerRubrique && <span>{nomSingulier(d.rubrique)}</span>}
+    {montrerRubrique && ' · '}
+    <span>{formaterDate(d.date)}</span>
+  </div>
+  <h3><a href={url}>{d.titre}</a></h3>
+  {d.chapeau && <p>{d.chapeau}</p>}
+  {d.source && <p class="exterieur">Source : {d.source}</p>}
+</article>

@@ -1,0 +1,95 @@
+---
+import reglages from '../data/reglages.json';
+import { formaterDate } from '../rubriques';
+
+interface Props {
+  reactions: { auteur: string; date?: Date; texte: string }[];
+  titreArticle: string;
+}
+
+const { reactions = [], titreArticle } = Astro.props;
+const cle = reglages.cle_formulaire?.trim();
+const retour = Astro.site ? new URL('/merci/', Astro.site).toString() : '/merci/';
+---
+
+<section class="reactions">
+  {
+    reactions.length > 0 && (
+      <>
+        <div class="section-title">
+          <h2>Réactions</h2>
+          <div class="line" />
+          <span class="more">
+            {reactions.length} message{reactions.length > 1 ? 's' : ''} publié
+            {reactions.length > 1 ? 's' : ''}
+          </span>
+        </div>
+        <div class="fil">
+          {reactions.map((r) => (
+            <article class="reaction">
+              <div class="qui">
+                {r.auteur}
+                {r.date && <span class="quand"> · {formaterDate(new Date(r.date))}</span>}
+              </div>
+              <p>{r.texte}</p>
+            </article>
+          ))}
+        </div>
+      </>
+    )
+  }
+
+  <div class="formulaire">
+    <h3>{reglages.reactions_titre}</h3>
+    <p class="note">{reglages.reactions_texte}</p>
+
+    {
+      cle ? (
+        <form action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value={cle} />
+          <input type="hidden" name="subject" value={`Réaction — ${titreArticle}`} />
+          <input type="hidden" name="from_name" value={reglages.nom_du_site} />
+          <input type="hidden" name="article" value={titreArticle} />
+          <input type="hidden" name="redirect" value={retour} />
+          {/* Piège à robots : invisible pour les humains */}
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="piege"
+            style="display:none"
+            tabindex="-1"
+            autocomplete="off"
+          />
+
+          <div class="deux-champs">
+            <label>
+              <span>Votre nom</span>
+              <input type="text" name="nom" required placeholder="Comment vous signer" />
+            </label>
+            <label>
+              <span>Votre e-mail</span>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Pour vous répondre — jamais publié"
+              />
+            </label>
+          </div>
+
+          <label>
+            <span>Votre message</span>
+            <textarea name="message" rows="6" required placeholder="Écrivez ici." />
+          </label>
+
+          <button type="submit">Envoyer</button>
+        </form>
+      ) : (
+        <p class="note">
+          Écrivez-nous à{' '}
+          <a href={`mailto:${reglages.email}`}>{reglages.email}</a>.
+        </p>
+      )
+    }
+  </div>
+</section>

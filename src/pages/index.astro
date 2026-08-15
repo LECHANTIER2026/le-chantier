@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import Infolettre from '../components/Infolettre.astro';
+import reglages from '../data/reglages.json';
+import { rubriques, formaterDate } from '../rubriques';
+import { tousLesArticles } from '../lib/articles';
+
+const tous = await tousLesArticles();
+
+// Le slogan : la fin de la phrase (« slogan_accent ») s'affiche en couleur.
+const accent = (reglages as any).slogan_accent?.trim() ?? '';
+const slogan = reglages.slogan;
+const debutSlogan =
+  accent && slogan.endsWith(accent)
+    ? slogan.slice(0, slogan.length - accent.length)
+    : slogan;
+const finSlogan = accent && slogan.endsWith(accent) ? accent : '';
+
+// L'article « à la une » : celui coché « mise en avant », sinon le plus récent.
+const une = tous.find((a) => a.data.mise_en_avant) ?? tous[0];
+const reste = tous.filter((a) => a.id !== une?.id);
+
+// Colonne de droite : les recensions et recommandations les plus récentes.
+const ailleurs = reste
+  .filter((a) => ['recensions', 'recommandations'].includes(a.data.rubrique))
+  .slice(0, 4);
+
+// Pour chaque rubrique, les 3 dernières entrées.
+const parRubrique = rubriques.map((r) => ({
+  rubrique: r,
+  articles: reste.filter((a) => a.data.rubrique === r.slug).slice(0, 3),
+}));
+---
+
+<Base>
+  <section slot="entete" class="hero">
+    <h1 class="slogan">
+      {debutSlogan}{finSlogan && <em>{finSlogan}</em>}
+    </h1>
+    <p class="accroche">{reglages.accroche}</p>
+  </section>
+
+  {
+    une && (
+      <section class="lede">
+        <div>
+          <div class="kicker">{rubriques.find((r) => r.slug === une.data.rubrique)?.singulier}</div>
+          <h3>
+            <a href={`/articles/${une.id}/`}>{une.data.titre}</a>
+          </h3>
+          {une.data.chapeau && <p>{une.data.chapeau}</p>}
+          <div class="byline">
+            {une.data.auteur && `Par ${une.data.auteur} — `}
+            {formaterDate(une.data.date)}
+          </div>
+        </div>
+
+        {ailleurs.length > 0 && (
+          <div class="aside">
+            <h4>{reglages.colonne_titre}</h4>
+            <ul>
+              {ailleurs.map((a) => (
+                <li>
+                  <a href={`/articles/${a.id}/`}>{a.data.titre}</a>
+                  <span class="src">
+                    {a.data.source ? a.data.source : reglages.nom_du_site}
+                    {a.data.auteur ? ` · ${a.data.auteur}` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+    )
+  }
+
+  {
+    !une && (
+      <p class="vide">
+        Le site est prêt : ajoutez votre premier article depuis l’espace
+        d’administration et il apparaîtra ici.
+      </p>
+    )
+  }
+
+  {
+    parRubrique.map(
+      ({ rubrique, articles }) =>
+        articles.length > 0 && (
+          <>
+            <div class="section-title">
+              <h2>{rubrique.nom}</h2>
+              <div class="line" />
+              <a class="more" href={`/${rubrique.slug}/`}>
+                Tout voir →
+              </a>
+            </div>
+            <div class="grid">
+              {articles.map((a) => (
+                <Carte article={a} montrerRubrique={false} />
+              ))}
+            </div>
+          </>
+        )
+    )
+  }
+
+  <Infolettre />
+</Base>

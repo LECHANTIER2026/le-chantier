@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import { rubriques } from '../rubriques';
+import reglages from '../data/reglages.json';
+
+interface Props {
+  titre?: string;
+  description?: string;
+  image?: string;
+}
+
+const { titre, description, image } = Astro.props;
+const titrePage = titre
+  ? `${titre} — ${reglages.nom_du_site}`
+  : `${reglages.nom_du_site} — ${reglages.slogan}`;
+const desc = description || reglages.description_referencement;
+const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titrePage}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={titrePage} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={reglages.nom_du_site}
+      href="/rss.xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <a href="/" class="nom">{reglages.nom_du_site}</a>
+      </div>
+
+      <slot name="entete" />
+
+      <nav class="rubriques" aria-label="Rubriques">
+        {
+          rubriques.map((r) => (
+            <a
+              href={`/${r.slug}/`}
+              aria-current={chemin === `/${r.slug}` ? 'page' : undefined}
+            >
+              {r.nom}
+            </a>
+          ))
+        }
+        <a
+          href="/qui-sommes-nous/"
+          aria-current={chemin === '/qui-sommes-nous' ? 'page' : undefined}
+          >Qui sommes-nous&nbsp;?</a
+        >
+      </nav>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="pied">
+        <span class="nom">{reglages.nom_du_site} © {new Date().getFullYear()}</span>
+        <a href={`mailto:${reglages.email}`}>{reglages.email}</a>
+        {
+          (reglages as any).instagram && (
+            <a
+              href={(reglages as any).instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          )
+        }
+        <a href="/rss.xml">Fil RSS</a>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import Liste from '../../components/Liste.astro';
+import { rubriques } from '../../rubriques';
+import { tousLesArticles } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const tous = await tousLesArticles();
+  return rubriques.map((r) => ({
+    params: { rubrique: r.slug },
+    props: {
+      rubrique: r,
+      articles: tous.filter((a) => a.data.rubrique === r.slug),
+    },
+  }));
+}
+
+const { rubrique, articles } = Astro.props;
+---
+
+<Base titre={rubrique.nom} description={rubrique.intro}>
+  <section slot="entete" class="hero mince">
+    <h1 class="slogan">{rubrique.nom}</h1>
+    <p class="accroche">{rubrique.intro}</p>
+  </section>
+
+  <Liste articles={articles} />
+</Base>

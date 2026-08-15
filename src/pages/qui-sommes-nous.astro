@@ -1,0 +1,45 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import reglages from '../data/reglages.json';
+
+const page = await getEntry('pages', 'qui-sommes-nous');
+const { Content } = await render(page!);
+---
+
+<Base titre={page!.data.titre} description={page!.data.chapeau}>
+  <section slot="entete" class="hero mince">
+    <h1 class="slogan">{page!.data.titre}</h1>
+    {page!.data.chapeau && <p class="accroche">{page!.data.chapeau}</p>}
+  </section>
+
+  <div class="page-simple">
+    <div class="prose">
+      <Content />
+    </div>
+    <div class="pied-article">
+      <p style="font-family: var(--sans); font-size: 14px;">
+        Nous écrire : <a
+          href={`mailto:${reglages.email}`}
+          style="color: var(--accent);">{reglages.email}</a
+        >
+        {
+          (reglages as any).instagram && (
+            <>
+              <br />
+              Nous suivre :{' '}
+              <a
+                href={(reglages as any).instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="color: var(--accent);"
+              >
+                Instagram ↗
+              </a>
+            </>
+          )
+        }
+      </p>
+    </div>
+  </div>
+</Base>
