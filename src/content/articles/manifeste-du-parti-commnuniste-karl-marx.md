@@ -1,6 +1,6 @@
 ---
 titre: Manifeste du parti commnuniste, Karl Marx
-rubrique: recommandations
+rubrique: recensions
 date: 2026-08-15
 auteur: Auguste
 chapeau: "Ce livre est un classique dans l'histoire de la philosophie. Bien que
@@ -35,6 +35,6 @@ Son troisième chapitre va asseoir la légitimité du parti communiste en montra
 
 Le quatrième chapitre consolide cette même légitimité, mais positivement cette fois. Le Parti communiste est le seul légitime car il travaille réellement pour les intérêts des prolétaires (la justification ayant été donnée dans le chapitre deux). Il est également le seul capable d’atteindre une puissance sans nom car il vise une union internationale des prolétaires.
 
- 
+
 
 En résumé, ce plaidoyer pour l’établissement d’un parti communiste, qui serait véritablement en faveur des prolétaires, se nourrit d’arguments à la fois philosophiques, historiques et pratiques. Cependant, la vision matérialiste sous-jacente n’est ni explicitée ni justifiée. Cette prémisse implicite constitue le cœur de notre critique.
