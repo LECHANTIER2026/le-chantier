@@ -77,15 +77,6 @@ const parRubrique = rubriques.map((r) => ({
   }
 
   {
-    !une && (
-      <p class="vide">
-        Le site est prêt : ajoutez votre premier article depuis l’espace
-        d’administration et il apparaîtra ici.
-      </p>
-    )
-  }
-
-  {
     parRubrique.map(
       ({ rubrique, articles }) =>
         articles.length > 0 && (
