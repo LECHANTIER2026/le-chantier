@@ -20,7 +20,6 @@ Ce constat vient nous réveiller de manière particulière à l’ère du numér
 
 Qui donnera sa force aux révolutions ? Qui réveillera les consciences engourdies des peuples opprimés, si plus personne ne sait penser? L’urgence est là, c’est une évidence. Il faut s’engager dans un double mouvement : d’une part, il faut limiter et orienter l’utilisation du numérique (comme le font des initiatives telles que *Rise for the Mind*++[3]++). D’autre part, il est nécessaire de créer des lieux où la pensée libre, critique et engagée peut se développer.
 
-  
 
 
 ---
