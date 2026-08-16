@@ -8,7 +8,7 @@ chapeau: Et si les technologies numériques étaient en train d’escamoter notr
   dans tous les domaines de la vie publique et privée, il est nécessaire
   d'ouvrir des voies de pensée et d'action.
 mise_en_avant: false
-brouillon: false
+brouillon: true
 ---
 Et si les technologies numériques étaient en train d’escamoter notre esprit critique ? C’est cette question qui taraude  de nombreux chercheurs aujourd’hui. Une étude de Marianne Wolf [1], psychiatre américaine, témoigne d’une atrophie de certaines activités neuronales dans le cerveau des enfants fortement exposés aux écrans. Le cortex préfrontal, siège du raisonnement critique, démontre une diminution de ses capacités. Ce fait troublant n’est qu’un exemple des conséquences délétères des technologies numériques. 
 
